@@ -1,16 +1,32 @@
 {
-  "name": "express-mongodb-app-boiler-multi-tenant",
+  "name": "express-mongodb-auth-app-boiler",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "scss": "sass --watch scss:public/css",
+    "dev": "concurrently \"nodemon ./bin/www\" \"npm run scss\""
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "concurrently": "^9.2.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^5.1.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "ejs": "~2.6.1",
-    "express": "~4.16.1",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.1",
     "http-errors": "~1.6.3",
-    "morgan": "~1.9.1"
+    "mongodb": "^6.17.0",
+    "morgan": "~1.9.1",
+    "nodemailer": "^7.0.4",
+    "nodemon": "^3.1.10",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0"
   }
 }
