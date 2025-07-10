@@ -15,7 +15,7 @@ router.get("/login", getLogin);
 router.get("/register", getRegister);
 router.get("/reset-password/:token?", getResetPassword);
 router.get("/logout", logout);
-router.post("/send-reset-link",  body("email").isEmail().withMessage("Valid email required"),sendResetPasswordLink)
+router.post("/send-reset-link",  body("email").isEmail().withMessage("Valid email required."),sendResetPasswordLink)
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -30,8 +30,8 @@ router.post(
   [
     body("email").isEmail().withMessage("Valid email required"),
     body("password")
-      .isLength({ min: 6 })
-      .withMessage("Password must be at least 6 chars"),
+      .isLength({ min: 12 })
+      .withMessage("Password must be at least 12 characters."),
     body("confirmPassword")
       .custom((value, { req }) => value === req.body.password)
       .withMessage("Passwords must match"),
@@ -39,6 +39,11 @@ router.post(
   register
 );
 
-router.post("/reset-password/:token", resetPassword);
+router.post("/reset-password/:token",body("password")
+.isLength({ min: 12 })
+.withMessage("Password must be at least 12 characters."),
+body("confirmPassword")
+.custom((value, { req }) => value === req.body.password)
+.withMessage("Passwords must match"), resetPassword);
 
 module.exports = router;

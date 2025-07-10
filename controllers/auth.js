@@ -174,18 +174,8 @@ const sendResetPasswordLink = async (req, res, next) => {
 
 const resetPassword = async (req, res, next) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      req.flash(
-        "error",
-        errors.array().map((e) => e.msg)
-      );
-      return res.redirect("/auth/login");
-    }
-
     const { token } = req.params;
     const { password, confirmPassword } = req.body;
-
     const db = await connectMainDB();
     const usersCollection = db.collection("users");
 
@@ -199,9 +189,13 @@ const resetPassword = async (req, res, next) => {
       return res.redirect("/auth/reset-password");
     }
 
-    if (password !== confirmPassword) {
-      req.flash("error", "Passwords do not match.");
-      return res.redirect(`/auth/reset-password/${token}`);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      req.flash(
+        "error",
+        errors.array().map((e) => e.msg)
+      );
+      return res.redirect(`/auth/reset-password${token ? "/"+token : ''}`);
     }
 
     if (!token || !password) {
