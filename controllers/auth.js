@@ -182,6 +182,45 @@ const resetPassword = async (req, res, next) => {
       );
       return res.redirect("/auth/login");
     }
+
+    const { token } = req.params;
+    const { password, confirmPassword } = req.body;
+
+    const db = await connectMainDB();
+    const usersCollection = db.collection("users");
+
+    const user = await usersCollection.findOne({
+      resetToken: token,
+      resetTokenExpiration: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      req.flash("error", "Password reset token is invalid or has expired.");
+      return res.redirect("/auth/reset-password");
+    }
+
+    if (password !== confirmPassword) {
+      req.flash("error", "Passwords do not match.");
+      return res.redirect(`/auth/reset-password/${token}`);
+    }
+
+    if (!token || !password) {
+      req.flash("error", "Invalid request. Missing token or password.");
+      return res.redirect("/auth/reset-password");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    await usersCollection.updateOne(
+      { _id: user._id },
+      {
+        $set: { password: hashedPassword },
+        $unset: { resetToken: "", resetTokenExpiration: "" },
+      }
+    );
+
+    req.flash("success", "Your password has been reset successfully.");
+    return res.redirect("/auth/login");
   } catch (error) {
     next(error);
   }

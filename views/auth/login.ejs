@@ -1,6 +1,7 @@
 <div class="auth-wrapper">
   <div class="auth-card">
-    <h2 class="mb-4 text-center">Login</h2>
+    <h2 class="text-center">Welcome Back!</h2>
+    <div class="mb-4 text-center text-muted h4">Login</div>
     <%-include("../partials/flash_alerts")%>
 
     <form action="/auth/login" method="POST" novalidate>
@@ -13,10 +14,10 @@
         <label for="password">Password</label>
       </div>
       <button class="btn btn-primary w-100">Login</button>
-      <div class="text-center mt-2">
+      <div class="text-center mt-2 d-none">
         <a href="/google" class="btn btn-outline-dark w-100">Login with Google</a>
       </div>
-      <div class="text-end mt-2">
+      <div class="text-start mt-2">
         <a class="text-decoration-none text-muted" href="/auth/reset-password">Forgot password?</a>
       </div>
     </form>
