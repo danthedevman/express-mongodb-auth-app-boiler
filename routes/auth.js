@@ -28,13 +28,13 @@ router.post(
 router.post(
   "/register",
   [
-    body("email").isEmail().withMessage("Valid email required"),
+    body("email").isEmail().withMessage("Valid email required."),
     body("password")
       .isLength({ min: 12 })
       .withMessage("Password must be at least 12 characters."),
     body("confirmPassword")
       .custom((value, { req }) => value === req.body.password)
-      .withMessage("Passwords must match"),
+      .withMessage("Passwords must match."),
   ],
   register
 );
@@ -44,6 +44,6 @@ router.post("/reset-password/:token",body("password")
 .withMessage("Password must be at least 12 characters."),
 body("confirmPassword")
 .custom((value, { req }) => value === req.body.password)
-.withMessage("Passwords must match"), resetPassword);
+.withMessage("Passwords must match."), resetPassword);
 
 module.exports = router;
